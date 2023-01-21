@@ -16,16 +16,36 @@ double ud(double y){
      return u(a,y) ;
 }
 
-double der_ud(double x){
+double derUd(double x){
     return 2.0;
 }
-double der_ug(double x){
+double derUg(double x){
     return 2.0;
 }
 
 double fsecond_membre(double ug, double ud, double derivUg, double derivUd, double x, double y){
     return 2.0;
 }
+
+int main(){
+    cout<<1<<endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int main(){
     cout<<1<<endl;

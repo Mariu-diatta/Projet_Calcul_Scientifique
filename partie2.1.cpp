@@ -119,6 +119,28 @@ int num_gb_int(int N, int M, int s){
     return numint(N,M,vecteur[0],vecteur[1]);
 }
 
+
+// 2.2 Partie triangulation
+
+//fonction de mallage
+
+vector<vector<int>> maillageTR(int N, int M){
+    vector<vector<int>> t_tab(2*N*M, vector<int>(3));
+    for(int i=0; i<=N; i++){ 
+        for(int j=0; j<=M; j++){
+            int n1=numgb(N,M,i,j);
+            int n2=numgb(N,M,i+1,j);
+            int n3=numgb(N,M,i+1,j+1);
+            int n2_1=numgb(N,M,i,j+1);
+            vector<int> t_1 ={n1,n2,n3};
+            vector<int> t_2 ={n1,n2_1,n3};
+            t_tab.push_back(t_1);
+            t_tab.push_back(t_2);
+        } 
+    }
+    return t_tab;
+}
+
 int main()
 {
     vector <double> sub = Subdiv(2.0, 10);
@@ -146,6 +168,23 @@ int main()
     cout<<"\n"<<endl;
     cout<<"Le numero intérieur k\n"<<endl;
     cout<<num_gb_int(10, 10,19)<<endl;
+
+    cout<<"°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n"<<endl;
+
+    cout<<"Partie 2.2 \n"<<endl;
+
+    vector < vector <int> > maillage = maillageTR(10,10);
+
+    for (int i = 0; i<=maillage.capacity(); i++){
+       
+       for (int j = 0; j < maillage[i].capacity(); j++)
+       {
+            cout<<"("<<maillage[i][0]<<","<<maillage[i][1]<<","<<maillage[i][2]<<")\n"<<endl;
+       }
+       
+    }
+
+
 }
 
 	
