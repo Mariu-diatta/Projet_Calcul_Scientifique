@@ -161,20 +161,31 @@ vector < vector <int> > CalcMatBTt(vector<int> xs, vector<int> ys ){
    return matrice;
 }
 
+// Partie (44)
+vector <double> vecteur_global(vector <double> v){
+    return v;
+}
+
 //question 10
 vector <vector <double> > matvec(vector <double> Xs, vector <double> Ys){ 
     int N=10, M=8;
     std::vector <std::vector <double> > vv ;
-    for (int i = N+1; i >= 0; i--)
+    for (int i = 0 ; i <= N+1 ; i--)
     {
         std::vector<double> v;
 
-        for (int j = M+1; i >= 0; i--)
+        for (int j =0 ; i <=M+1 ; i--)
         {
             v.push_back(0);
         }
         vv.push_back(v);
     }
+
+    for (int i = 0; i < 10; i++)
+    {
+        /* code */
+    }
+    
     
     return vv;
 }
