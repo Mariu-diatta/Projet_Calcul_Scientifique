@@ -141,6 +141,44 @@ vector<vector<int>> maillageTR(int N, int M){
     return t_tab;
 }
 
+//question 2.2.2 (31)
+
+vector < vector <int> > CalcMatBTt(vector<int> xs, vector<int> ys ){ 
+
+   vector < vector <int> >  matrice;
+   
+   matrice.push_back(vector <int> (2) );
+   matrice.push_back(vector <int> (2) ) ;
+   
+   matrice[0][0] = xs[1] - xs[0];
+   
+   matrice[0][1] = xs[2] - xs[0];
+   
+   matrice[1][0] = ys[1] - ys[0];
+   
+   matrice[1][1] = ys[2] - ys[0];
+
+   return matrice;
+}
+
+//question 10
+vector <vector <double> > matvec(vector <double> Xs, vector <double> Ys){ 
+    int N=10, M=8;
+    std::vector <std::vector <double> > vv ;
+    for (int i = N+1; i >= 0; i--)
+    {
+        std::vector<double> v;
+
+        for (int j = M+1; i >= 0; i--)
+        {
+            v.push_back(0);
+        }
+        vv.push_back(v);
+    }
+    
+    return vv;
+}
+
 int main()
 {
     vector <double> sub = Subdiv(2.0, 10);
