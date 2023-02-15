@@ -33,7 +33,7 @@ vector <double> Subdiv (double a, int N){
 
 int numgb (int N, int M , int i, int j ){
      
-     double sij = (N+1)*j+i;
+     int sij = (N+1)*j+i;
      
      return sij;
 }
@@ -124,42 +124,80 @@ int num_gb_int(int N, int M, int s){
 
 //fonction de mallage
 
-vector<vector<int>> maillageTR(int N, int M){
-    vector<vector<int>> t_tab(2*N*M, vector<int>(3));
-    for(int i=0; i<=N; i++){ 
-        for(int j=0; j<=M; j++){
-            int n1=numgb(N,M,i,j);
-            int n2=numgb(N,M,i+1,j);
-            int n3=numgb(N,M,i+1,j+1);
-            int n2_1=numgb(N,M,i,j+1);
-            vector<int> t_1 ={n1,n2,n3};
-            vector<int> t_2 ={n1,n2_1,n3};
-            t_tab.push_back(t_1);
-            t_tab.push_back(t_2);
-        } 
-    }
-    return t_tab;
-}
+ vector<vector<int> > maillageTR(int N, int M){
+	int K = 2*N*M;
+    vector<vector<int> > TGR ;
 
-//question 2.2.2 (31)
+     vector<int> t_1 (3);
+     vector<int> t_2 (3);
+
+    for(int j=0; j<M; j++){
+
+        for(int i=0; i<N; i++){
+
+
+            t_1[0] = numgb(N,M,i,j);
+            t_1[1] = numgb(N,M,i+1,j);
+            t_1[2] = numgb(N,M,i+1,j+1);
+
+            t_2[0] = numgb(N,M,i,j);
+            t_2[1] = numgb(N,M,i,j+1);
+            t_2[2] = numgb(N,M,i+1,j+1);
+
+            TGR.push_back(t_1);
+            TGR.push_back(t_2);
+        }
+
+    }
+
+
+     return TGR;
+} 
+
+//question (31):
 
 vector < vector <int> > CalcMatBTt(vector<int> xs, vector<int> ys ){ 
 
-   vector < vector <int> >  matrice;
-   
-   matrice.push_back(vector <int> (2) );
-   matrice.push_back(vector <int> (2) ) ;
-   
-   matrice[0][0] = xs[1] - xs[0];
-   
-   matrice[0][1] = xs[2] - xs[0];
-   
-   matrice[1][0] = ys[1] - ys[0];
-   
-   matrice[1][1] = ys[2] - ys[0];
-
-   return matrice;
+	vector < vector <int> >  matrice;
+	
+	matrice.push_back(vector <int> (2) );
+	matrice.push_back(vector <int> (2) ) ;
+	
+	matrice[0][0] = xs[1] - xs[0];
+	
+	matrice[0][1] = xs[2] - xs[0];
+	
+	matrice[1][0] = ys[1] - ys[0];
+	
+	matrice[1][1] = ys[2] - ys[0];
+	
+	
+	return matrice;
+	
 }
+int N;
+int M;
+
+/*
+vector <int> extendVec (vector<int> V ){
+	
+	int I = (N-1)*(M-1);
+	int G = (N+1)*(M+1);
+	
+	vector <int> V_f (G);
+	
+	for (int i = 0 ; i < G ; i++){
+	
+	
+	
+	}
+	}
+	
+*/
+
+//question 2.2.2 (31)
+
+
 
 // Partie (44)
 vector <double> vecteur_global(vector <double> v){
@@ -180,6 +218,7 @@ vector <vector <double> > matvec(vector <double> Xs, vector <double> Ys){
         }
         vv.push_back(v);
     }
+    cout << "*******************numgb le numero global************************\n" << endl;
 
     for (int i = 0; i < 10; i++)
     {
@@ -190,50 +229,88 @@ vector <vector <double> > matvec(vector <double> Xs, vector <double> Ys){
     return vv;
 }
 
-int main()
-{
-    vector <double> sub = Subdiv(2.0, 10);
-   
-    for (int i = 0; i<=10; i++){
-       
-        cout<<sub[i]<<"\n"<<endl;
-       
-    }
-
-    cout<<"°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n"<<endl;
-
-    vector <int> result = invnumgb(10, 10,23);
-    cout<<"("<<result[0]<<","<<result[1]<<")"<<"\n"<<endl;
-
-    cout<<"Projet ==>Partie 2.1.2\n"<<endl;
-
-    cout<<numint(10,10,2,3)<<endl;
-    cout<<"\n"<<endl;
-    cout<<"Trouvons les valeurs de i et j\n"<<endl;
-    vector <int> invnumin = invnumint(10, 10,19);
-    cout<<"("<<invnumin[0]<<","<<invnumin[1]<<")"<<"\n"<<endl;
-    cout<<"La valeur globale\n"<<endl;
-    cout<<num_int_gb(10, 10,19)<<endl;
-    cout<<"\n"<<endl;
-    cout<<"Le numero intérieur k\n"<<endl;
-    cout<<num_gb_int(10, 10,19)<<endl;
-
-    cout<<"°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n"<<endl;
-
-    cout<<"Partie 2.2 \n"<<endl;
-
-    vector < vector <int> > maillage = maillageTR(10,10);
-
-    for (int i = 0; i<=maillage.capacity(); i++){
-       
-       for (int j = 0; j < maillage[i].capacity(); j++)
-       {
-            cout<<"("<<maillage[i][0]<<","<<maillage[i][1]<<","<<maillage[i][2]<<")\n"<<endl;
-       }
-       
-    }
+vector<vector <double> > DiffTerm ( vector<double> xs , vector<double> ys ){
 
 
 }
+
+
+
+int main() {
+    vector<double> sub = Subdiv(2.0, 10);
+
+    for (int i = 0; i <= 10; i++) {
+
+        cout << sub[i] << "\n" << endl;
+
+    }
+
+    int re = numgb(10, 10,5, 4);
+    cout << re << "\n" << endl;
+    cout << "*******************************************\n" << endl;
+
+    vector<int> result = invnumgb(10, 10, 49);
+    cout << "(" << result[0] << "," << result[1] << ")" << "\n" << endl;
+
+    cout << "Projet ==>Partie 2.1.2\n" << endl;
+
+    cout << numint(10, 10, 2, 3) << endl;
+    cout << "\n" << endl;
+    cout << "Trouvons les valeurs de i et j\n" << endl;
+    vector<int> invnumin = invnumint(10, 10, 19);
+    cout << "(" << invnumin[0] << "," << invnumin[1] << ")" << "\n" << endl;
+    cout << "La valeur globale\n" << endl;
+    cout << num_int_gb(10, 10, 19) << endl;
+    cout << "\n" << endl;
+    cout << "Le numero interieur est :  k\n" << endl;
+    cout << num_gb_int(10, 10, 19) << endl;
+
+    cout << "***************************************************************************\n" << endl;
+
+    cout << "question 31: calcul de la matrice Bt\n" << endl;
+    vector<int> x(3);
+    vector<int> y(3);
+    x[0] = 1;
+    x[1] = 3;
+    x[2] = 2;
+    y[0] = 3;
+    y[1] = 8;
+    y[2] = 6;
+
+    vector<vector<int> > Bt = CalcMatBTt(x, y);
+    vector<int> m0 = Bt[0];
+    vector<int> m1 = Bt[1];
+    cout << "La matrice bt est :  \n" << endl;
+
+    for (int i = 0; i < 2; i++) {
+
+        for (int j = 0; j < 2; j++) {
+
+            cout << Bt[i][j] << "\t";
+
+        }
+        cout << endl;
+    }
+
+
+    cout << "***********************Le maillage****************************** \n" << endl;
+
+    vector<vector<int> > maillage = maillageTR(4, 4);
+
+    for (int i = 0; i <= 31; i++) {
+
+        for (int j = 0; j <= 2; j++) {
+
+            cout << maillage[i][j] << "\t";
+
+        }
+        cout << endl;
+    }
+}
+
+
+
+
+
 
 	
