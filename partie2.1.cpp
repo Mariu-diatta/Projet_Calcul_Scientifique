@@ -200,7 +200,56 @@ vector <int> extendVec (vector<int> V ){
 
 
 // Partie (44)
-vector <double> vecteur_global(vector <double> v){
+
+// question (d)
+int N =10;
+int M =10;
+vector <int> extendVect(vector <double> v){
+    int I = (N-1)*(M-1);
+	int G = (N+1)*(M+1);
+    vector <int> vv;
+
+    for (int s = 0; s < G; s++)
+    {
+        vector <int> neud_s=invnumgb(M,N,s);
+
+        for (int k = 0; k < I; k++)
+        {
+            vector <int> neud_k=invnumint(N,M,k);
+
+            if(neud_s[0]==neud_k[0] && neud_s[1]==neud_k[1]){
+                vv.push_back(v[k]);
+            }else{
+                vv.push_back(0);
+            }
+            
+        }
+        
+    }
+    
+    return vv;
+}
+
+// question (e) 
+vector<int> intVect(vector <double> vv){
+    int I = (N-1)*(M-1);
+	int G = (N+1)*(M+1);
+    vector <int> v;
+
+    for (int s = 0; s < G; s++)
+    {
+        vector <int> neud_s=invnumgb(M,N,s);
+
+        for (int k = 0; k < I; k++)
+        {
+            vector <int> neud_k=invnumint(N,M,k);
+
+            if(neud_s[0]==neud_k[0] && neud_s[1]==neud_k[1]){
+                v.push_back(vv[k]);
+            }
+        }
+        
+    }
     return v;
 }
 
@@ -306,6 +355,8 @@ int main() {
         }
         cout << endl;
     }
+
+    cout << "************** Vecteur Global ****** \n" << endl;
 }
 
 
