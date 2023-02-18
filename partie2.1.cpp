@@ -230,137 +230,136 @@ vector <vector <double> > BT_inv_t ( vector <vector <double> >   M){
 }
 //calcul du produit de deux matrices inverse de BT et BT transpose
 
-// vector<vector<double>> produit_matrice(vector<vector<double>> A, vector<vector<double>> B,vector<vector<double>> &P ){
+vector<vector<double>> produit_matrice(vector<vector<double>> A, vector<vector<double>> B,vector<vector<double>> &P ){
 
-//     P = vector<vector<double>>(2);
-//     vector<double>p(2) ;
-//     for (int i=0; i<2; i++){
+    P = vector<vector<double>>(2);
+    vector<double>p(2) ;
+    for (int i=0; i<2; i++){
 
-//         for (int j=0; j<2; j++){
-//             double s =0 ;
-//             for (int k=0; k<2; k++){
+        for (int j=0; j<2; j++){
+            double s =0 ;
+            for (int k=0; k<2; k++){
 
-//                 s = s + A[i][k]*B[k][j]; }
+                s = s + A[i][k]*B[k][j]; }
 
-//             p[j]=s;
-//         }
-//         P[i] = p;
+            p[j]=s;
+        }
+        P[i] = p;
 
-//     }
-//     return P;
+    }
+    return P;
 
-// }
+}
 
-//Produit de vecteur-matrice
-// vector<double> produit_vecteur_matrice(vector<vector<double>>m,  vector<double> v ,vector<double> &resultat)
-// {
-//     resultat = vector<double>(v.size());
-//     double s ;
+//////Produit de vecteur-matrice
+vector<double> produit_vecteur_matrice(vector<vector<double>>m,  vector<double> v ,vector<double> &resultat)
+{
+    resultat = vector<double>(v.size());
+    double s ;
 
-//     for(int j=0; j<2; j++)
-//     {
-//         s = 0 ;
-//         for(int i=0;i<2;i++)
-//             s += m[j][i]*v[i] ;
-//         resultat[j] = s ;
-//     }
-//     return resultat;
-// }
+    for(int j=0; j<2; j++)
+    {
+        s = 0 ;
+        for(int i=0;i<2;i++)
+            s += m[j][i]*v[i] ;
+        resultat[j] = s ;
+    }
+    return resultat;
+}
 
-// //Produit matrice vecteurs
-// // vector<double> produit_matrice_vecteur(vector<vector<double>>m,  vector<double> v ,vector<double> &resultat)
-// // {
-// //     resultat = vector<double>(v.size());
-// //     double s ;
+//Produit matrice vecteurs
+vector<double> produit_matrice_vecteur(vector<vector<double>>m,  vector<double> v ,vector<double> &resultat)
+{
+    resultat = vector<double>(v.size());
+    double s ;
 
-// //     for(int j=0; j<2; j++)
-// //     {
-//         s = 0 ;
-//         for(int i=0;i<2;i++)
-//             s += m[i][j]*v[i] ;
-//         resultat[j] = s ;
-//     }
-//     return resultat;
-// }
+    for(int j=0; j<2; j++)
+    {
+        s = 0 ;
+        for(int i=0;i<2;i++) s += m[i][j]*v[i] ;
+        resultat[j] = s ;
+    }
+    return resultat;
+}
 
 
-// vector<vector <double> > DiffTerm ( vector<double> xs , vector<double> ys ) {
+vector<vector <double> > DiffTerm ( vector<double> xs , vector<double> ys ) {
 
-//    vector <vector<double>> matrice;
+   vector <vector<double>> matrice;
 
-//     vector<double> ligne(3);
+    vector<double> ligne(3);
 
-//    double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
+   double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
 
-//     vector<vector<double>> B = CalcMatBTt(xs,ys);
+    vector<vector<double>> B = CalcMatBTt(xs,ys);
 
-//     vector<vector<double>> B1 = BT_inv(B, det);
-//     vector<vector<double>> B2 = BT_inv_t(B1);
+    vector<vector<double>> B1 = BT_inv(B, det);
+    vector<vector<double>> B2 = BT_inv_t(B1);
 
-//     // Les gradientlamdai pour 0<=i<=2
-//     vector<double> gradient_0 = {-1, -1};
-//     vector<double> gradient_1 = {1, 0};
-//     vector<double> gradient_2 = {0, 1};
-//     vector<vector<double> > gradient = {gradient_0, gradient_1, gradient_2};
-//     vector<vector<double> > grad;
-//     //cette boucle calcul les gradient lamda k transpose multiplie par les lamda j
-//     //vector< vector<double> > p = produit_matrice(B1,B2);
-//     vector<double> B3;
-//     vector<double> B33;
+    // Les gradientlamdai pour 0<=i<=2
+    vector<double> gradient_0 = {-1, -1};
+    vector<double> gradient_1 = {1, 0};
+    vector<double> gradient_2 = {0, 1};
+    vector<vector<double> > gradient = {gradient_0, gradient_1, gradient_2};
+    vector<vector<double> > grad;
+    //cette boucle calcul les gradient lamda k transpose multiplie par les lamda j
+    //vector< vector<double> > p = produit_matrice(B1,B2);
+    vector<double> B3;
+    vector<double> B33;
 
-//     for (int k = 0; k < 3; ++k) {
+    for (int k = 0; k < 3; ++k) {
 
-//         for (int j = 0; j < 3; ++j) {
+        for (int j = 0; j < 3; ++j) {
 
-//             vector<double> B4 =   produit_matrice_vecteur(B1,gradient[j], B3);
-//             vector<double> B5 =   produit_matrice_vecteur(B2,B4, B33);
+            vector<double> B4 =   produit_matrice_vecteur(B1,gradient[j], B3);
+            vector<double> B5 =   produit_matrice_vecteur(B2,B4, B33);
 
-//          ligne[j]= inner_product( gradient[k].begin(),gradient[k].end(),B5.begin(), 0   );
+         ligne[j]= inner_product( gradient[k].begin(),gradient[k].end(),B5.begin(), 0   );
 
-//         }
-//         matrice.push_back(ligne);
-//     }
+        }
+        matrice.push_back(ligne);
+    }
 
-//       return matrice;
+      return matrice;
 
-// }
-// int N;
-// int M;
-// vector<vector <float> > ConvectTerm ( vector<double> xs , vector<double> ys ){
-//     double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
-//     vector<vector <float> > matrice ;
-//     vector<float> ligne(3);
-//     //lamda va contenir les integrales des lamdas pour j= 0,1 et 2
-//     vector <float> lamda { -1/6, 1/6, 1/6 };
+}
+int N;
+int M;
+vector<vector <float> > ConvectTerm ( vector<double> xs , vector<double> ys ){
+    double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
+    vector<vector <float> > matrice ;
+    vector<float> ligne(3);
+    //lamda va contenir les integrales des lamdas pour j= 0,1 et 2
+    vector <float> lamda { -1/6, 1/6, 1/6 };
 
-//     //lamda_k va contenir les integrales partiel de x des lamdas pour k= 0,1 et 2
+    //lamda_k va contenir les integrales partiel de x des lamdas pour k= 0,1 et 2
 
-//     vector <float> lamda_k {-1, 1, 0};
+    vector <float> lamda_k {-1, 1, 0};
 
-//     for (int k = 0; k <3 ; ++k) {
+    for (int k = 0; k <3 ; ++k) {
 
-//         for (int j = 0; j < 3; ++j) {
+        for (int j = 0; j < 3; ++j) {
 
-//             ligne[j]= det*lamda_k[k]*lamda[j];
+            ligne[j]= det*lamda_k[k]*lamda[j];
 
-//         }
-//         matrice.push_back(ligne);
-//     }
-//     return matrice;
+        }
+        matrice.push_back(ligne);
+    }
+    return matrice;
 
-// }
+}
 
-// vector<vector <double> > ReacTerm ( vector<double> xs , vector<double> ys ){
-//     double det = abs((xs[1] - xs[0])*(ys[2] - ys[0]) -(xs[2] - xs[0])*(ys[1] - ys[0]));
-//     vector<vector <double> > matrice ;
-//     vector <double> M0{ det/24,det/48, det/48 };
-//     vector <double> M1{ det/48,det/24, det/48 };
-//     vector <double> M2{ det/48,det/48 ,det/24 };
-//     matrice.push_back(M0);
-//     matrice.push_back(M1);
-//     matrice.push_back(M2);
-//     return matrice;
-// }
+vector<vector <double> > ReacTerm ( vector<double> xs , vector<double> ys ){
+    double det = abs((xs[1] - xs[0])*(ys[2] - ys[0]) -(xs[2] - xs[0])*(ys[1] - ys[0]));
+    vector<vector <double> > matrice ;
+    vector <double> M0{ det/24,det/48, det/48 };
+    vector <double> M1{ det/48,det/24, det/48 };
+    vector <double> M2{ det/48,det/48 ,det/24 };
+    matrice.push_back(M0);
+    matrice.push_back(M1);
+    matrice.push_back(M2);
+    return matrice;
+}
 
 
 // Partie (44)
