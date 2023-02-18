@@ -411,30 +411,38 @@ vector<int> intVect(vector <int> vv, int N=6, int M=6){
 }
 
 //question 10
+void calcul_BT(){
+   int t=0;
+}
 
-// // vector <vector <double> > matvec(vector <double> Xs, vector <double> Ys){ 
-//     int N=10, M=8;
-//     std::vector <std::vector <double> > vv ;
-//     for (int i = 0 ; i <= N+1 ; i--)
-//     {
-//         std::vector<double> v;
+int TRG(int t, int i, int N=6, int M=6){
+    int n_trg=0;
 
-//         for (int j =0 ; i <=M+1 ; i--)
-//         {
-//             v.push_back(0);
-//         }
-//         vv.push_back(v);
-//     }
-//     cout << "*******************numgb le numero global************************\n" << endl;
+    return n_trg;
+}
 
-//     for (int i = 0; i < 10; i++)
-//     {
-//         /* code */
-//     }
+vector <vector <int> > matVec(vector <int> v, int N=6, int M=6){ 
+    std::vector <std::vector <int> > vv((N+1)*(M+1)) ;
+    // for (int i = 0 ; i <= N+1 ; i--)
+    // {
+    //     std::vector<double> v;
+
+    //     for (int j =0 ; i <=M+1 ; i--)
+    //     {
+    //         v.push_back(0);
+    //     }
+    //     vv.push_back(v);
+    // }
+    cout << "*******************numgb le numero global************************\n" << endl;
+
+    for (int i = 0; i < 10; i++)
+    {
+        /* code */
+    }
     
     
-//     return vv;
-// }
+    return vv;
+}
 
 
 
