@@ -366,52 +366,58 @@ vector < vector <int> > CalcMatBTt(vector<int> xs, vector<int> ys ){
 
 // question (d)
 
-vector <int> extendVect(vector <int> v, int N=6, int M=6){
-    int I = (N-1)*(M-1);
+vector <int> extendVect(vector <int> V, int N=6, int M=6){
+
+    int I = V.size();
 	int G = (N+1)*(M+1);
-    vector <int> vv(G);
+    vector <int> W(G);
     int k=0;
+
     for (int s = 0; s < G; s++)
     {   
         int neud_s=num_gb_int(M,N,s);
         if(k < I)
         {
             if(neud_s==k){
-                vv.push_back(v[k]);
+                W[s]=V[k];
             }else
             {
-                vv.push_back(0);
+                W[s]=0;
             } 
         }  
+
         k++;  
     }
     
-    return vv;
+    return W;
 }
 
 // question (e) 
-vector<int> intVect(vector <int> vv, int N=6, int M=6){
+vector<int> intVect(vector <int> W, int N=6, int M=6){
+
     int I = (N-1)*(M-1);
-	int G = (N+1)*(M+1);
-    vector <int> v(G);
-   
+	int G = W.size();
+    vector <int> V(I);
     int k=0;
+
     for (int s = 0; s < G; s++)
     {
-        if(k < G)
+        if(k < I)
         {
            int neud_s=num_gb_int(M,N,s);
            if(neud_s==k){
-                v.push_back(vv[k]);
+                V[k]=W[s];
             }
         }
+
         k++;  
     }
-    return v;
+    return V;
 }
 
 //question 10
  vector <vector <int>> calcul_BT(int t, int N, int M){
+
    vector <int>  t_trg;
    t_trg=(maillageTR(N,M))[t];
    vector <int> xs;
@@ -419,7 +425,7 @@ vector<int> intVect(vector <int> vv, int N=6, int M=6){
    vector <int> V1= invnumgb(M,N,t_trg[0]);
    vector <int> V2= invnumgb(M,N,t_trg[1]);
    vector <int> V3= invnumgb(M,N,t_trg[2]);
-   
+
    // la fonction jacobien reste à définir 
    for (int i = 0; i <=2; i++)
    {
@@ -441,10 +447,12 @@ vector<int> intVect(vector <int> vv, int N=6, int M=6){
 }
 
 int TRG(int t, int i, int N=6, int M=6){
+
     int n_trg=0;
     vector<vector<int>> liste_trg;
     vector<int> t_trg;
     int glb=0;
+
     if(i <= 2)
     {
         liste_trg = maillageTR(N, M);
@@ -462,7 +470,7 @@ vector <int>  matVec(vector <int> v, int K, int N=6, int M=6){
 
     vector<int> W;
 
-    int s;
+    int s=0;
 
     for (int t= 0 ; t <= K-1 ; t++){
 
