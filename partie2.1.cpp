@@ -77,7 +77,7 @@ vector <int> invnumgb(int M, int N, int s ){
 int numint(int N, int M, int i, int j){
     if(1<=i && i<= N-1 && 1<=j && j<= M-1){
         return ((j-1)*(N-1)+i-1);
-    }
+    }else return 111111;
 }
 
 //question(16)
@@ -375,16 +375,18 @@ vector <int> extendVect(vector <int> V, int N=6, int M=6){
 
     for (int s = 0; s < G; s++)
     {   
-        int neud_s=num_gb_int(M,N,s);
-        if(k < I)
-        {
-            if(neud_s==k){
+        //int neud_s=num_gb_int(M,N,s);
+        // if(k < I)
+        // {
+            int k=num_gb_int(M,N,s);//modification
+            //if(neud_s==k){
+            if(k!=111111){//modification 
                 W[s]=V[k];
             }else
             {
                 W[s]=0;
             } 
-        }  
+        //}  
 
         k++;  
     }
@@ -402,13 +404,14 @@ vector<int> intVect(vector <int> W, int N=6, int M=6){
 
     for (int s = 0; s < G; s++)
     {
-        if(k < I)
-        {
-           int neud_s=num_gb_int(M,N,s);
-           if(neud_s==k){
+        // if(k < I)
+        // {
+          // int neud_s=num_gb_int(M,N,s);
+           int k=num_gb_int(M,N,s);//modification
+           if(111111!=k){
                 V[k]=W[s];
             }
-        }
+        //}
 
         k++;  
     }
