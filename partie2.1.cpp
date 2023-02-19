@@ -349,17 +349,17 @@ vector < vector <int> > CalcMatBTt(vector<int> xs, vector<int> ys ){
 
 // }
 
-// vector<vector <double> > ReacTerm ( vector<double> xs , vector<double> ys ){
-//     double det = abs((xs[1] - xs[0])*(ys[2] - ys[0]) -(xs[2] - xs[0])*(ys[1] - ys[0]));
-//     vector<vector <double> > matrice ;
-//     vector <double> M0{ det/24,det/48, det/48 };
-//     vector <double> M1{ det/48,det/24, det/48 };
-//     vector <double> M2{ det/48,det/48 ,det/24 };
-//     matrice.push_back(M0);
-//     matrice.push_back(M1);
-//     matrice.push_back(M2);
-//     return matrice;
-// }
+vector<vector <int> > ReacTerm ( vector<int> xs , vector<int> ys ){
+    int det = abs((xs[1] - xs[0])*(ys[2] - ys[0]) -(xs[2] - xs[0])*(ys[1] - ys[0]));
+    vector<vector <int> > matrice ;
+    vector <int> M0{ det/24,det/48, det/48 };
+    vector <int> M1{ det/48,det/24, det/48 };
+    vector <int> M2{ det/48,det/48 ,det/24 };
+    matrice.push_back(M0);
+    matrice.push_back(M1);
+    matrice.push_back(M2);
+    return matrice;
+}
 
 
 // Partie (44)
@@ -416,17 +416,15 @@ vector<int> intVect(vector <int> W, int N=6, int M=6){
 }
 
 //question 10
- vector <vector <int>> calcul_BT(int t, int N, int M){
+ vector <vector <int>> calcul_BT(int t, int N, int M,  vector <int> xs, vector <int> ys){
 
    vector <int>  t_trg;
    t_trg=(maillageTR(N,M))[t];
-   vector <int> xs;
-   vector <int> ys;
    vector <int> V1= invnumgb(M,N,t_trg[0]);
    vector <int> V2= invnumgb(M,N,t_trg[1]);
    vector <int> V3= invnumgb(M,N,t_trg[2]);
 
-   // la fonction jacobien reste à définir 
+   // la fonction jacobien  
    for (int i = 0; i <=2; i++)
    {
         xs.push_back(V1[0]);
@@ -469,12 +467,17 @@ vector <int>  matVec(vector <int> v, int K, int N=6, int M=6){
     std::vector <std::vector <int> > B;
 
     vector<int> W;
+    
+    vector <int> xs;
+
+    vector <int> ys;
 
     int s=0;
 
+
     for (int t= 0 ; t <= K-1 ; t++){
 
-        B=calcul_BT(t,N,M);
+        B=calcul_BT(t,N,M,xs,ys);
 
         for (int i = 0; i <= 2; i++)
         { 
@@ -486,7 +489,7 @@ vector <int>  matVec(vector <int> v, int K, int N=6, int M=6){
             {
               int r = TRG(t,j, N, M)  /* code */;
 
-              int PROD2=2; /// reste à iplémenté la valeur qui pour le moment fixer à 2
+              int PROD2=ReacTerm (xs, ys)[i][j];
               
               res=res + (extendVect(v,N,M)[r])*PROD2;
 
