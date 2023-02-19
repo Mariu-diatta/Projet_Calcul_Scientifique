@@ -164,13 +164,13 @@ int num_gb_int(int N, int M, int s){
 
 //question (31):
 
-vector < vector <double> > CalcMatBTt(vector<double> xs, vector<double> ys ){
+vector < vector <int> > CalcMatBTt(vector<int> xs, vector<int> ys ){
 
-	vector < vector <double> >  mat;
+	vector < vector <int> >  mat;
 	
-	mat.push_back(vector <double> (2) );
+	mat.push_back(vector <int> (2) );
 
-	mat.push_back(vector <double> (2) ) ;
+	mat.push_back(vector <int> (2) ) ;
 	
 	mat[0][0] = xs[1] - xs[0];
 	
@@ -185,181 +185,181 @@ vector < vector <double> > CalcMatBTt(vector<double> xs, vector<double> ys ){
 	
 }
 
-//question 37 :
+// //question 37 :
 
- // cette fonction permet de calculer la matrice inverse
-
-
- vector <vector <double> > BT_inv ( vector <vector <double> >   M,double determinant){
-
-     vector < vector <double> >  matri;
-
-     matri.push_back(vector <double> (2) );
-     matri.push_back(vector <double> (2) ) ;
-     matri[0][0] = (1/determinant)*M[1][1];
-
-     matri[0][1] = -(1/determinant)*M[0][1];
-
-     matri[1][0] = -(1/determinant)*M[1][0];
-
-     matri[1][1] = (1/determinant)*M[0][0] ;
-
-     return   matri;
+//  // cette fonction permet de calculer la matrice inverse
 
 
- }
+//  vector <vector <double> > BT_inv ( vector <vector <double> >   M,double determinant){
 
- //Transpose de la matrice inverse de BT
-vector <vector <double> > BT_inv_t ( vector <vector <double> >   M){
+//      vector < vector <double> >  matri;
 
-    vector < vector <double> >  matri;
+//      matri.push_back(vector <double> (2) );
+//      matri.push_back(vector <double> (2) ) ;
+//      matri[0][0] = (1/determinant)*M[1][1];
 
-    matri.push_back(vector <double> (2) );
-    matri.push_back(vector <double> (2) ) ;
-    matri[0][0] = M[1][1];
+//      matri[0][1] = -(1/determinant)*M[0][1];
 
-    matri[1][0] = -M[0][1];
+//      matri[1][0] = -(1/determinant)*M[1][0];
 
-    matri[0][1] = -M[1][0];
+//      matri[1][1] = (1/determinant)*M[0][0] ;
 
-    matri[1][1] = M[0][0] ;
-
-    return   matri;
+//      return   matri;
 
 
-}
-//calcul du produit de deux matrices inverse de BT et BT transpose
+//  }
 
-vector<vector<double>> produit_matrice(vector<vector<double>> A, vector<vector<double>> B,vector<vector<double>> &P ){
+//  //Transpose de la matrice inverse de BT
+// vector <vector <double> > BT_inv_t ( vector <vector <double> >   M){
 
-    P = vector<vector<double>>(2);
-    vector<double>p(2) ;
-    for (int i=0; i<2; i++){
+//     vector < vector <double> >  matri;
 
-        for (int j=0; j<2; j++){
-            double s =0 ;
-            for (int k=0; k<2; k++){
+//     matri.push_back(vector <double> (2) );
+//     matri.push_back(vector <double> (2) ) ;
+//     matri[0][0] = M[1][1];
 
-                s = s + A[i][k]*B[k][j]; }
+//     matri[1][0] = -M[0][1];
 
-            p[j]=s;
-        }
-        P[i] = p;
+//     matri[0][1] = -M[1][0];
 
-    }
-    return P;
+//     matri[1][1] = M[0][0] ;
 
-}
-
-//////Produit de vecteur-matrice
-vector<double> produit_vecteur_matrice(vector<vector<double>>m,  vector<double> v ,vector<double> &resultat)
-{
-    resultat = vector<double>(v.size());
-    double s ;
-
-    for(int j=0; j<2; j++)
-    {
-        s = 0 ;
-        for(int i=0;i<2;i++)
-            s += m[j][i]*v[i] ;
-        resultat[j] = s ;
-    }
-    return resultat;
-}
-
-//Produit matrice vecteurs
-vector<double> produit_matrice_vecteur(vector<vector<double>>m,  vector<double> v ,vector<double> &resultat)
-{
-    resultat = vector<double>(v.size());
-    double s ;
-
-    for(int j=0; j<2; j++)
-    {
-        s = 0 ;
-        for(int i=0;i<2;i++) s += m[i][j]*v[i] ;
-        resultat[j] = s ;
-    }
-    return resultat;
-}
+//     return   matri;
 
 
-vector<vector <double> > DiffTerm ( vector<double> xs , vector<double> ys ) {
+// }
+// //calcul du produit de deux matrices inverse de BT et BT transpose
 
-   vector <vector<double>> matrice;
+// vector<vector<double>> produit_matrice(vector<vector<double>> A, vector<vector<double>> B,vector<vector<double>> &P ){
 
-    vector<double> ligne(3);
+//     P = vector<vector<double>>(2);
+//     vector<double>p(2) ;
+//     for (int i=0; i<2; i++){
 
-   double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
+//         for (int j=0; j<2; j++){
+//             double s =0 ;
+//             for (int k=0; k<2; k++){
 
-    vector<vector<double>> B = CalcMatBTt(xs,ys);
+//                 s = s + A[i][k]*B[k][j]; }
 
-    vector<vector<double>> B1 = BT_inv(B, det);
-    vector<vector<double>> B2 = BT_inv_t(B1);
+//             p[j]=s;
+//         }
+//         P[i] = p;
 
-    // Les gradientlamdai pour 0<=i<=2
-    vector<double> gradient_0 = {-1, -1};
-    vector<double> gradient_1 = {1, 0};
-    vector<double> gradient_2 = {0, 1};
-    vector<vector<double> > gradient = {gradient_0, gradient_1, gradient_2};
-    vector<vector<double> > grad;
-    //cette boucle calcul les gradient lamda k transpose multiplie par les lamda j
-    //vector< vector<double> > p = produit_matrice(B1,B2);
-    vector<double> B3;
-    vector<double> B33;
+//     }
+//     return P;
 
-    for (int k = 0; k < 3; ++k) {
+// }
 
-        for (int j = 0; j < 3; ++j) {
+// //////Produit de vecteur-matrice
+// vector<double> produit_vecteur_matrice(vector<vector<double>>m,  vector<double> v ,vector<double> &resultat)
+// {
+//     resultat = vector<double>(v.size());
+//     double s ;
 
-            vector<double> B4 =   produit_matrice_vecteur(B1,gradient[j], B3);
-            vector<double> B5 =   produit_matrice_vecteur(B2,B4, B33);
+//     for(int j=0; j<2; j++)
+//     {
+//         s = 0 ;
+//         for(int i=0;i<2;i++)
+//             s += m[j][i]*v[i] ;
+//         resultat[j] = s ;
+//     }
+//     return resultat;
+// }
 
-         ligne[j]= inner_product( gradient[k].begin(),gradient[k].end(),B5.begin(), 0   );
+// //Produit matrice vecteurs
+// vector<double> produit_matrice_vecteur(vector<vector<double>>m,  vector<double> v ,vector<double> &resultat)
+// {
+//     resultat = vector<double>(v.size());
+//     double s ;
 
-        }
-        matrice.push_back(ligne);
-    }
+//     for(int j=0; j<2; j++)
+//     {
+//         s = 0 ;
+//         for(int i=0;i<2;i++) s += m[i][j]*v[i] ;
+//         resultat[j] = s ;
+//     }
+//     return resultat;
+// }
 
-      return matrice;
 
-}
-int N;
-int M;
-vector<vector <float> > ConvectTerm ( vector<double> xs , vector<double> ys ){
-    double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
-    vector<vector <float> > matrice ;
-    vector<float> ligne(3);
-    //lamda va contenir les integrales des lamdas pour j= 0,1 et 2
-    vector <float> lamda { -1/6, 1/6, 1/6 };
+// vector<vector <double> > DiffTerm ( vector<double> xs , vector<double> ys ) {
 
-    //lamda_k va contenir les integrales partiel de x des lamdas pour k= 0,1 et 2
+//    vector <vector<double>> matrice;
 
-    vector <float> lamda_k {-1, 1, 0};
+//     vector<double> ligne(3);
 
-    for (int k = 0; k <3 ; ++k) {
+//    double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
 
-        for (int j = 0; j < 3; ++j) {
+//     vector<vector<double>> B = CalcMatBTt(xs,ys);
 
-            ligne[j]= det*lamda_k[k]*lamda[j];
+//     vector<vector<double>> B1 = BT_inv(B, det);
+//     vector<vector<double>> B2 = BT_inv_t(B1);
 
-        }
-        matrice.push_back(ligne);
-    }
-    return matrice;
+//     // Les gradientlamdai pour 0<=i<=2
+//     vector<double> gradient_0 = {-1, -1};
+//     vector<double> gradient_1 = {1, 0};
+//     vector<double> gradient_2 = {0, 1};
+//     vector<vector<double> > gradient = {gradient_0, gradient_1, gradient_2};
+//     vector<vector<double> > grad;
+//     //cette boucle calcul les gradient lamda k transpose multiplie par les lamda j
+//     //vector< vector<double> > p = produit_matrice(B1,B2);
+//     vector<double> B3;
+//     vector<double> B33;
 
-}
+//     for (int k = 0; k < 3; ++k) {
 
-vector<vector <double> > ReacTerm ( vector<double> xs , vector<double> ys ){
-    double det = abs((xs[1] - xs[0])*(ys[2] - ys[0]) -(xs[2] - xs[0])*(ys[1] - ys[0]));
-    vector<vector <double> > matrice ;
-    vector <double> M0{ det/24,det/48, det/48 };
-    vector <double> M1{ det/48,det/24, det/48 };
-    vector <double> M2{ det/48,det/48 ,det/24 };
-    matrice.push_back(M0);
-    matrice.push_back(M1);
-    matrice.push_back(M2);
-    return matrice;
-}
+//         for (int j = 0; j < 3; ++j) {
+
+//             vector<double> B4 =   produit_matrice_vecteur(B1,gradient[j], B3);
+//             vector<double> B5 =   produit_matrice_vecteur(B2,B4, B33);
+
+//          ligne[j]= inner_product( gradient[k].begin(),gradient[k].end(),B5.begin(), 0   );
+
+//         }
+//         matrice.push_back(ligne);
+//     }
+
+//       return matrice;
+
+// }
+// int N;
+// int M;
+// vector<vector <float> > ConvectTerm ( vector<double> xs , vector<double> ys ){
+//     double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
+//     vector<vector <float> > matrice ;
+//     vector<float> ligne(3);
+//     //lamda va contenir les integrales des lamdas pour j= 0,1 et 2
+//     vector <float> lamda { -1/6, 1/6, 1/6 };
+
+//     //lamda_k va contenir les integrales partiel de x des lamdas pour k= 0,1 et 2
+
+//     vector <float> lamda_k {-1, 1, 0};
+
+//     for (int k = 0; k <3 ; ++k) {
+
+//         for (int j = 0; j < 3; ++j) {
+
+//             ligne[j]= det*lamda_k[k]*lamda[j];
+
+//         }
+//         matrice.push_back(ligne);
+//     }
+//     return matrice;
+
+// }
+
+// vector<vector <double> > ReacTerm ( vector<double> xs , vector<double> ys ){
+//     double det = abs((xs[1] - xs[0])*(ys[2] - ys[0]) -(xs[2] - xs[0])*(ys[1] - ys[0]));
+//     vector<vector <double> > matrice ;
+//     vector <double> M0{ det/24,det/48, det/48 };
+//     vector <double> M1{ det/48,det/24, det/48 };
+//     vector <double> M2{ det/48,det/48 ,det/24 };
+//     matrice.push_back(M0);
+//     matrice.push_back(M1);
+//     matrice.push_back(M2);
+//     return matrice;
+// }
 
 
 // Partie (44)
@@ -380,7 +380,7 @@ vector <int> extendVect(vector <int> v, int N=6, int M=6){
                 vv.push_back(v[k]);
             }else
             {
-                v.push_back(0);
+                vv.push_back(0);
             } 
         }  
         k++;  
@@ -393,55 +393,103 @@ vector <int> extendVect(vector <int> v, int N=6, int M=6){
 vector<int> intVect(vector <int> vv, int N=6, int M=6){
     int I = (N-1)*(M-1);
 	int G = (N+1)*(M+1);
-    vector <int> v(I);
+    vector <int> v(G);
    
-    int s=0;
-    for (int k = 0; k < I; k++)
+    int k=0;
+    for (int s = 0; s < G; s++)
     {
-        if(s < G)
+        if(k < G)
         {
-            int neud_s=num_gb_int(M,N,s);
-            if(neud_s==k){
-                v.push_back(vv[s]);
+           int neud_s=num_gb_int(M,N,s);
+           if(neud_s==k){
+                v.push_back(vv[k]);
             }
         }
-        s++;  
+        k++;  
     }
     return v;
 }
 
 //question 10
-void calcul_BT(){
-   int t=0;
+ vector <vector <int>> calcul_BT(int t, int N, int M){
+   vector <int>  t_trg;
+   t_trg=(maillageTR(N,M))[t];
+   vector <int> xs;
+   vector <int> ys;
+   vector <int> V1= invnumgb(M,N,t_trg[0]);
+   vector <int> V2= invnumgb(M,N,t_trg[1]);
+   vector <int> V3= invnumgb(M,N,t_trg[2]);
+   
+   // la fonction jacobien reste à définir 
+   for (int i = 0; i <=2; i++)
+   {
+        xs.push_back(V1[0]);
+        xs.push_back(V2[0]);
+        xs.push_back(V3[0]);
+   }
+
+   for (int i = 0; i <=2; i++)
+   {
+        ys.push_back(V1[1]);
+        ys.push_back(V2[1]);
+        ys.push_back(V3[1]);
+   }
+   
+   vector <vector <int>> matrix_g= CalcMatBTt(xs,ys);
+
+   return matrix_g;
 }
 
 int TRG(int t, int i, int N=6, int M=6){
     int n_trg=0;
-
-    return n_trg;
+    vector<vector<int>> liste_trg;
+    vector<int> t_trg;
+    int glb=0;
+    if(i <= 2)
+    {
+        liste_trg = maillageTR(N, M);
+        t_trg = liste_trg[t];
+        glb=t_trg [i];  
+    }
+    return glb;
 }
 
-vector <vector <int> > matVec(vector <int> v, int N=6, int M=6){ 
-    std::vector <std::vector <int> > vv((N+1)*(M+1)) ;
-    // for (int i = 0 ; i <= N+1 ; i--)
-    // {
-    //     std::vector<double> v;
+vector <int>  matVec(vector <int> v, int K, int N=6, int M=6){
 
-    //     for (int j =0 ; i <=M+1 ; i--)
-    //     {
-    //         v.push_back(0);
-    //     }
-    //     vv.push_back(v);
-    // }
-    cout << "*******************numgb le numero global************************\n" << endl;
+    std::vector <int>  WW((N+1)*(M+1)) ;
 
-    for (int i = 0; i < 10; i++)
-    {
-        /* code */
+    std::vector <std::vector <int> > B;
+
+    vector<int> W;
+
+    int s;
+
+    for (int t= 0 ; t <= K-1 ; t++){
+
+        B=calcul_BT(t,N,M);
+
+        for (int i = 0; i <= 2; i++)
+        { 
+            s=TRG(t,i,N,M);
+
+            int res=0;
+
+            for (int j = 0; j <= 2 ; i++)
+            {
+              int r = TRG(t,j, N, M)  /* code */;
+
+              int PROD2=2; /// reste à iplémenté la valeur qui pour le moment fixer à 2
+              
+              res=res + (extendVect(v,N,M)[r])*PROD2;
+
+              WW[s]=WW[s]+res;
+            }
+        }
     }
-    
-    
-    return vv;
+
+    W=intVect(WW);
+
+    return W;
 }
 
 
@@ -593,6 +641,10 @@ int main() {
     {
         cout << v1[i]<< "\n";
     }
+    // for (int i = 0; i < vv.size(); i++)
+    // {
+    //     cout << vv[i]<< "\n";
+    // }
 
 
 
