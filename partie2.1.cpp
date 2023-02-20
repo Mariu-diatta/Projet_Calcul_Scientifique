@@ -414,33 +414,44 @@ vector<double> intVect(vector <double> W, int N=6, int M=6){
 }
 
 //question 10
-//  vector <vector <int>> calcul_BT(int t, int N, int M,  vector <int> &xs, vector <int> &ys){
 
-//    vector <int>  t_trg;
-//    t_trg=(maillageTR(N,M))[t];
-//    vector <int> V1= invnumgb(M,N,t_trg[0]);
-//    vector <int> V2= invnumgb(M,N,t_trg[1]);
-//    vector <int> V3= invnumgb(M,N,t_trg[2]);
+vector <vector <double>> calcul_BT(...td,  vector <double> &Xs, vector <double> &Ys){
+        int t=td[0];
+        int N=td[1];
+        int M=td[2];
+        int a=td[3];
+        int b=a;
+        vector <double> xs, ys;
 
-//    // la fonction jacobien  
-//    for (int i = 0; i <=2; i++)
-//    {
-//         xs.push_back(V1[0]);
-//         xs.push_back(V2[0]);
-//         xs.push_back(V3[0]);
-//    }
+        vector <int>  t_trg;
 
-//    for (int i = 0; i <=2; i++)
-//    {
-//         ys.push_back(V1[1]);
-//         ys.push_back(V2[1]);
-//         ys.push_back(V3[1]);
-//    }
-   
-//    vector <vector <int>> matrix_g= CalcMatBTt(xs,ys);
+        vector <double> lesXs= Subdiv (a, N);
 
-//    return matrix_g;
-// }
+        vector <double> lesYs= Subdiv (b, M);
+
+        t_trg=(maillageTR(N,M))[t];
+        vector <int> V1= invnumgb(M,N,t_trg[0]);
+        vector <int> V2= invnumgb(M,N,t_trg[1]);
+        vector <int> V3= invnumgb(M,N,t_trg[2]);
+
+        // la fonction jacobien  
+        for (int i = 0; i <=2; i++)
+        {
+                xs.push_back(lesXs[V1[0]]);
+                xs.push_back(lesXs[V2[0]]);
+                xs.push_back(lesXs[V3[0]]);
+        }
+
+        for (int i = 0; i <=2; i++)
+        {
+                ys.push_back(lesYs[V1[1]]);
+                ys.push_back(lesYs[V2[1]]);
+                ys.push_back(lesYs[V3[1]]);
+        }
+        
+        vector <vector <double>> matrix_g= CalcMatBTt(xs,ys);
+
+}
 
 int TRG(int t, int i, int N=6, int M=6){
 
