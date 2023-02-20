@@ -18,11 +18,12 @@ using namespace std;
 
 //Question 9 ecrivons la fonction subdiv
 
+//la fonction subdiv permet de diviser un interval en xi ou yi
 vector <double> Subdiv (double a, int N){
      
-    double h = 2*a/N;
+    double h = 2*a/N; // le pas de la subdivisio,
      
-    vector <double> xi = vector<double>(N+1) ;
+    vector <double> xi = vector<double>(N+1) ; //liste des xi
    
      for (int i = 0; i<=N ; i++){
          
@@ -32,6 +33,7 @@ vector <double> Subdiv (double a, int N){
      return xi;
 }
 
+// fonction numgb permet de calculer le numéro global d'un point avec (i,j) donnée
 int numgb (int N, int M , int i, int j ){
     int sij =0;
     if(0<=i && i<= N && 0<=j && j<= M){
@@ -41,8 +43,10 @@ int numgb (int N, int M , int i, int j ){
 }
 
 //Question 13
-
-vector <int> invnumgb(int M, int N, int s ){
+/*fonction invnumgb permet de retrouver le couple (i,j) permettant de calcul
+...le numéro global Sij
+*/
+vector <int> invnumgb(int M, int N, int s ){ //
      
     vector <int> resultat ;
    
@@ -73,11 +77,13 @@ vector <int> invnumgb(int M, int N, int s ){
 **/
 
 //queston (14)
-
+/**
+ *  la fonction numint permet de caluler le numéro intérieur en fonction du couple (i,j)
+**/
 int numint(int N, int M, int i, int j){
-    if(1<=i && i<= N-1 && 1<=j && j<= M-1){
+    if(1<=i && i<= N-1 && 1<=j && j<= M-1){//condition d'appartenance à l'interieur
         return ((j-1)*(N-1)+i-1);
-    }else return 111111;
+    }else return -1;
 }
 
 //question(16)
@@ -164,13 +170,13 @@ int num_gb_int(int N, int M, int s){
 
 //question (31):
 
-vector < vector <int> > CalcMatBTt(vector<int> xs, vector<int> ys ){
+vector < vector <double> > CalcMatBTt(vector<double> xs, vector<double> ys ){
 
-	vector < vector <int> >  mat;
+	vector < vector <double> >  mat;
 	
-	mat.push_back(vector <int> (2) );
+	mat.push_back(vector <double> (2) );
 
-	mat.push_back(vector <int> (2) ) ;
+	mat.push_back(vector <double> (2) ) ;
 	
 	mat[0][0] = xs[1] - xs[0];
 	
@@ -349,12 +355,12 @@ vector < vector <int> > CalcMatBTt(vector<int> xs, vector<int> ys ){
 
 // }
 
-vector<vector <int> > ReacTerm ( vector<int> xs , vector<int> ys ){
-    int det = abs((xs[1] - xs[0])*(ys[2] - ys[0]) -(xs[2] - xs[0])*(ys[1] - ys[0]));
-    vector<vector <int> > matrice ;
-    vector <int> M0{ det/24,det/48, det/48 };
-    vector <int> M1{ det/48,det/24, det/48 };
-    vector <int> M2{ det/48,det/48 ,det/24 };
+vector<vector <double> > ReacTerm ( vector<double> xs , vector<double> ys ){
+    double det = abs((xs[1] - xs[0])*(ys[2] - ys[0]) -(xs[2] - xs[0])*(ys[1] - ys[0]));
+    vector<vector <double> > matrice ;
+    vector <double> M0{ det/24,det/48, det/48 };
+    vector <double> M1{ det/48,det/24, det/48 };
+    vector <double> M2{ det/48,det/48 ,det/24 };
     matrice.push_back(M0);
     matrice.push_back(M1);
     matrice.push_back(M2);
@@ -366,28 +372,22 @@ vector<vector <int> > ReacTerm ( vector<int> xs , vector<int> ys ){
 
 // question (d)
 
-vector <int> extendVect(vector <int> V, int N=6, int M=6){
+vector <double> extendVect(vector <double> V, int N=6, int M=6){
 
     int I = V.size();
 	int G = (N+1)*(M+1);
-    vector <int> W(G);
+    vector <double> W(G);
     int k=0;
 
     for (int s = 0; s < G; s++)
     {   
-        //int neud_s=num_gb_int(M,N,s);
-        // if(k < I)
-        // {
-            int k=num_gb_int(M,N,s);//modification
-            //if(neud_s==k){
-            if(k!=111111){//modification 
+            int k=num_gb_int(M,N,s);
+            if(k!=-1){ 
                 W[s]=V[k];
             }else
             {
                 W[s]=0;
             } 
-        //}  
-
         k++;  
     }
     
@@ -395,24 +395,19 @@ vector <int> extendVect(vector <int> V, int N=6, int M=6){
 }
 
 // question (e) 
-vector<int> intVect(vector <int> W, int N=6, int M=6){
+vector<double> intVect(vector <double> W, int N=6, int M=6){
 
     int I = (N-1)*(M-1);
 	int G = W.size();
-    vector <int> V(I);
+    vector <double> V(I);
     int k=0;
 
     for (int s = 0; s < G; s++)
     {
-        // if(k < I)
-        // {
-          // int neud_s=num_gb_int(M,N,s);
-           int k=num_gb_int(M,N,s);//modification
-           if(111111!=k){
-                V[k]=W[s];
-            }
-        //}
-
+        int k=num_gb_int(M,N,s);
+        if(-1!=k){
+            V[k]=W[s];
+        }
         k++;  
     }
     return V;
@@ -463,13 +458,13 @@ int TRG(int t, int i, int N=6, int M=6){
     return glb;
 }
 
-vector <int>  matVec(vector <int> v, int K, double a=1, int N=6, int M=6){
+vector <double>  matVec(vector <double> v, int K, double a=1, int N=6, int M=6){
 
-    std::vector <int>  WW((N+1)*(M+1)) ;
+    std::vector <double>  WW((N+1)*(M+1)) ;
 
     std::vector <std::vector <int> > B;
 
-    vector<int> W;
+    vector<double> W;
 
     int s=0;
 
@@ -478,9 +473,7 @@ vector <int>  matVec(vector <int> v, int K, double a=1, int N=6, int M=6){
 
     for (int t= 0 ; t <= K-1 ; t++){
 
-        vector <int> xs;
-
-        vector <int> ys;
+        vector <double> xs, ys;
 
         vector <int>  t_trg;
 
@@ -508,7 +501,7 @@ vector <int>  matVec(vector <int> v, int K, double a=1, int N=6, int M=6){
                 ys.push_back(lesYs[V3[1]]);
         }
         
-        vector <vector <int>> matrix_g= CalcMatBTt(xs,ys);
+        vector <vector <double>> matrix_g= CalcMatBTt(xs,ys);
 
         for (int i = 0; i <= 2; i++)
         { 
@@ -518,7 +511,7 @@ vector <int>  matVec(vector <int> v, int K, double a=1, int N=6, int M=6){
 
             for (int j = 0; j <= 2 ; i++)
             {
-              int r = TRG(t,j, N, M)  /* code */;
+              int r = TRG(t,j, N, M);
 
               int PROD2=ReacTerm (xs, ys)[i][j];
               
@@ -675,9 +668,9 @@ int main() {
     // //     }
     // //     cout << endl;
     // // }
-    vector <int> v{2,3,4,12,34,3,5,9,10,25,26,67,9,12,33,2,3,34,9,45,8,19,32,34,99};
-    vector <int>  vv = extendVect( v);
-     vector <int>  v1 = intVect( vv);
+    vector <double> v{2,3,4,12,34,3,5,9,10,25,26,67,9,12,33,2,3,34,9,45,8,19,32,34,99};
+    vector <double>  vv = extendVect( v);
+    vector <double>  v1 = intVect( vv);
     // cout << "************** Vecteur Global ****** \n" << endl;
     for (int i = 0; i < v1.size(); i++)
     {
