@@ -419,33 +419,33 @@ vector<int> intVect(vector <int> W, int N=6, int M=6){
 }
 
 //question 10
- vector <vector <int>> calcul_BT(int t, int N, int M,  vector <int> xs, vector <int> ys){
+//  vector <vector <int>> calcul_BT(int t, int N, int M,  vector <int> &xs, vector <int> &ys){
 
-   vector <int>  t_trg;
-   t_trg=(maillageTR(N,M))[t];
-   vector <int> V1= invnumgb(M,N,t_trg[0]);
-   vector <int> V2= invnumgb(M,N,t_trg[1]);
-   vector <int> V3= invnumgb(M,N,t_trg[2]);
+//    vector <int>  t_trg;
+//    t_trg=(maillageTR(N,M))[t];
+//    vector <int> V1= invnumgb(M,N,t_trg[0]);
+//    vector <int> V2= invnumgb(M,N,t_trg[1]);
+//    vector <int> V3= invnumgb(M,N,t_trg[2]);
 
-   // la fonction jacobien  
-   for (int i = 0; i <=2; i++)
-   {
-        xs.push_back(V1[0]);
-        xs.push_back(V2[0]);
-        xs.push_back(V3[0]);
-   }
+//    // la fonction jacobien  
+//    for (int i = 0; i <=2; i++)
+//    {
+//         xs.push_back(V1[0]);
+//         xs.push_back(V2[0]);
+//         xs.push_back(V3[0]);
+//    }
 
-   for (int i = 0; i <=2; i++)
-   {
-        ys.push_back(V1[1]);
-        ys.push_back(V2[1]);
-        ys.push_back(V3[1]);
-   }
+//    for (int i = 0; i <=2; i++)
+//    {
+//         ys.push_back(V1[1]);
+//         ys.push_back(V2[1]);
+//         ys.push_back(V3[1]);
+//    }
    
-   vector <vector <int>> matrix_g= CalcMatBTt(xs,ys);
+//    vector <vector <int>> matrix_g= CalcMatBTt(xs,ys);
 
-   return matrix_g;
-}
+//    return matrix_g;
+// }
 
 int TRG(int t, int i, int N=6, int M=6){
 
@@ -463,24 +463,52 @@ int TRG(int t, int i, int N=6, int M=6){
     return glb;
 }
 
-vector <int>  matVec(vector <int> v, int K, int N=6, int M=6){
+vector <int>  matVec(vector <int> v, int K, double a=1, int N=6, int M=6){
 
     std::vector <int>  WW((N+1)*(M+1)) ;
 
     std::vector <std::vector <int> > B;
 
     vector<int> W;
-    
-    vector <int> xs;
-
-    vector <int> ys;
 
     int s=0;
+
+    double b=a;
 
 
     for (int t= 0 ; t <= K-1 ; t++){
 
-        B=calcul_BT(t,N,M,xs,ys);
+        vector <int> xs;
+
+        vector <int> ys;
+
+        vector <int>  t_trg;
+
+        vector <double> lesXs= Subdiv (a, N);
+
+        vector <double> lesYs= Subdiv (b, M);
+
+        t_trg=(maillageTR(N,M))[t];
+        vector <int> V1= invnumgb(M,N,t_trg[0]);
+        vector <int> V2= invnumgb(M,N,t_trg[1]);
+        vector <int> V3= invnumgb(M,N,t_trg[2]);
+
+        // la fonction jacobien  
+        for (int i = 0; i <=2; i++)
+        {
+                xs.push_back(lesXs[V1[0]]);
+                xs.push_back(lesXs[V2[0]]);
+                xs.push_back(lesXs[V3[0]]);
+        }
+
+        for (int i = 0; i <=2; i++)
+        {
+                ys.push_back(lesYs[V1[1]]);
+                ys.push_back(lesYs[V2[1]]);
+                ys.push_back(lesYs[V3[1]]);
+        }
+        
+        vector <vector <int>> matrix_g= CalcMatBTt(xs,ys);
 
         for (int i = 0; i <= 2; i++)
         { 
