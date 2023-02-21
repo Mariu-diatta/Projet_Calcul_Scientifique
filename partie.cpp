@@ -1,3 +1,6 @@
+//
+// Created by h on 2/20/23.
+//
 /******************************************************************************
 
                               Online C++ Compiler.
@@ -10,7 +13,6 @@ Write your code in this editor and press "Run" button to compile and execute it.
 #include <vector>
 #include <numeric>
 #include <math.h>
-#define PI 3.14159
 double eps =5 ;
 double gam = 20;
 double lam =1;
@@ -25,30 +27,30 @@ using namespace std;
 double x;
 double y;
 double w;
-double ug(double y){
+double ug(double w){
 
-    return sin(PI*y);
+    return sin(w);
 }
 
-double ud(double y){
-    return 0;
+double ud(double x){
+    return cos(x);
 }
 
-double ug_derivs(double y){
-    return -pow(PI,2)*sin(PI*y);
+double ug_derivs(double x){
+    return -sin(x);
 }
 
 double ud_derivs(double y){
 
-    return 0;
+    return -cos(y);
 }
-//ud_derivs et ug_derivs sont les fonctions derivés secondes de u*
-double fsecond_membre( double x, double y  ) {
-int a = 1;
-    double r =(eps*((x+a)*ud_derivs(y)- (x-a)*ug_derivs(y) )  - gam*(ud(y) - ug(y))
-            - lam*( (x+a)*ud(y) -(x-a)*ug(y)) )/(2*a) ;
 
-     return r;
+double fsecond_membre( double x, double y  ) {
+
+    double r =(eps*((x+a)*ud_derivs(y)- (x-a)*ug_derivs(y) )  - gam*(ud(y) - ug(y))
+               - lam*( (x+a)*ud(y) -(x-a)*ug(y)) )/(2*a) ;
+
+    return r;
 
 }
 
@@ -56,39 +58,41 @@ int a = 1;
 
 //Question 9 ecrivons la fonction subdiv
 vector <double> Subdiv (double a, int N){
-     // h represente le pas
+    // h represente le pas
     double h = 2*a/N;
-     // xi va contenir toutes les point x1.....xN
+    // xi va contenir toutes les point x1.....xN
     vector <double> xi = vector<double>(N+1) ;
     // cette boucle permet de faire le calcul des xi
-     for (int i = 0; i<=N ; i++){
+    for (int i = 0; i<=N ; i++){
 
         xi[i]=-a + i*h;
-     }
+    }
 
-     return xi;
+    return xi;
 }
 
 int numgb (int N, int M , int i, int j ){
-
-     int sij = (N+1)*j+i;
-
-     return sij;
+    int sij =0;
+    if(0<=i && i<= N && 0<=j && j<= M){
+        sij = (N+1)*j+i;
+    }
+    return sij;
 }
+
 
 //Question 13
 
-vector <int> invnumgb(int N, int M, int s ){
+vector <int> invnumgb(int M, int N, int s ){
 
     vector <int> resultat ;
-    bool t_test=false;
+
     if( 0 <= s && s<= (N+1)*(M+1)-1 ){
 
         for(int i = 0; i<=N; i++){
-
+            bool t_test=false;
             for(int j = 0; j<=M; j++){
 
-                if( s==numgb(N, M,i,j)) {
+                if( numgb(N, M,i,j)==s) {
 
                     resultat.push_back(i);
                     resultat.push_back(j);
@@ -96,12 +100,12 @@ vector <int> invnumgb(int N, int M, int s ){
                     break;
 
                 }
-
             }
             if (t_test) break;
         }
     }
     return resultat ;
+
 }
 
 /************
@@ -110,159 +114,71 @@ vector <int> invnumgb(int N, int M, int s ){
 
 //queston (14)
 
-int  numint(int N, int M, int i, int j){
-     //condition ou le i et le j ne verifie pas la condition
-    if( (i< 1 || i > N-1) && (j< 1 || j > N-1) ){
+int numint(int N, int M, int i, int j){
+    if(1<=i && i<= N-1 && 1<=j && j<= M-1){
 
-        return -1;
-    }
-
-    else {
         return ((j-1)*(N-1)+i-1);
     }
+    else return -1;
 }
 
 //question(16)
 
 vector<int> invnumint(int N , int M, int k){
-
-    vector <int> resultat ;
-    bool t_test=false;
-    if(  k>0 && k <= (N-1)*(M-1)-1 ){
-        for(int i = 1; i< N; i++){
-
-            for(int j = 1; j<M; j++){
-
-                if( k==numint(N, M,i,j) ) {
-
-                    resultat.push_back(i);
-                    resultat.push_back(j);
-
-                    t_test=true;
-                    break;
-                }
-
-            }
-            if (t_test) break;
-        }
-    }
+    vector<int> resultat;
+    int j = k/(M-1);
+    resultat.push_back(k%(N-1));
+    resultat.push_back( k/(M-1));
     return resultat ;
 }
 
 //question 17
 
 int num_int_gb(int N, int M, int k){
-    vector<int> vecteur;
-
-    if(0 <= k && k <= (N-1)*(M-1)-1){
-        vecteur = invnumint(N ,M, k);
-    }
+    vector<int> vecteur = invnumint(N ,M, k);
     return numgb(N,M,vecteur[0],vecteur[1]);
 }
 
 //question 18
 
 int num_gb_int(int N, int M, int s){
-
-    vector<int> m_vecteur = invnumgb(N ,M, s);
-
-    return numint(N,M,m_vecteur[0],m_vecteur[1]);
+    vector<int> vecteur = invnumgb(N ,M, s);
+    return numint(N,M,vecteur[0],vecteur[1]);
 }
+
 
 // 2.2 Partie triangulation
 
 //fonction de mallage
 
- vector<vector<int> > maillageTR(int N, int M){
+vector<vector<int> > maillageTR(int N, int M){
 
     vector<vector<int> > TGR ;
 
-     vector<int> t_1 (3);
-     vector<int> t_2 (3);
-     vector<int> t_11 (3);
-     vector<int> t_22 (3);
-// incrementation de 2 pas pour pouvoir alterner les triangles horizontalement et verticalement
-    for(int j=0; j<M; j=j+2){
+    vector<int> t_1 (3);
+    vector<int> t_2 (3);
 
-        for(int i=0; i<N; i=i+2){
+    for(int j=0; j<M; j++){
+
+        for(int i=0; i<N; i++){
 
 
             t_1[0] =  numgb(N,M,i,j);
             t_1[1] = numgb(N,M,i+1,j);
-            t_1[2] = numgb(N,M,i,j+1);
+            t_1[2] = numgb(N,M,i+1,j+1);
 
-            t_2[0] = numgb(N,M,i+1,j);
+            t_2[0] = numgb(N,M,i,j);
             t_2[1] = numgb(N,M,i,j+1);
             t_2[2] = numgb(N,M,i+1,j+1);
 
             TGR.push_back(t_1);
             TGR.push_back(t_2);
-
-            t_11[0] =  numgb(N,M,i+1,j);
-            t_11[1] = numgb(N,M,i+2,j);
-            t_11[2] = numgb(N,M,i+2,j+1);
-
-            t_22[0] = numgb(N,M,i+1,j);
-            t_22[1] = numgb(N,M,i+1,j+1);
-            t_22[2] = numgb(N,M,i+2,j+1);
-            TGR.push_back(t_11);
-            TGR.push_back(t_22);
-
-
-
         }
 
-
-
-
-          for(int i=0; i<N; i=i+2){
-
-
-
-              t_22[0] =  numgb(N,M,i,j+1);
-              t_22[1] = numgb(N,M,i+1,j+1);
-              t_22[2] = numgb(N,M,i+1,j+2);
-
-              t_11[0] = numgb(N,M,i,j+1);
-              t_11[1] = numgb(N,M,i,j+2);
-              t_11[2] = numgb(N,M,i+1,j+2);
-              TGR.push_back(t_11);
-              TGR.push_back(t_22);
-
-
-              t_2[0] =  numgb(N,M,i+1,j+1);
-              t_2[1] = numgb(N,M,i+2,j+1);
-              t_2[2] = numgb(N,M,i+1,j+2);
-
-              t_1[0] = numgb(N,M,i+2,j+1);
-              t_1[1] = numgb(N,M,i+1,j+2);
-              t_1[2] = numgb(N,M,i+2,j+2);
-
-            TGR.push_back(t_1);
-            TGR.push_back(t_2);
-
-        }
-        /*
-
-        for(int i=0; i<N; i++){
-
-
-            t_1[0] =  numgb(N,M,i,j+1);
-            t_1[1] = numgb(N,M,i+1,j+1);
-            t_1[2] = numgb(N,M,i+1,j+2);
-
-            t_2[0] = numgb(N,M,i,j+1);
-            t_2[1] = numgb(N,M,i,j+2);
-            t_2[2] = numgb(N,M,i+1,j+2);
-
-            TGR.push_back(t_1);
-            TGR.push_back(t_2);
-        }
-*/
     }
 
 
-     return TGR;
+    return TGR;
 }
 
 
@@ -270,49 +186,50 @@ int num_gb_int(int N, int M, int s){
 
 vector < vector <double> > CalcMatBTt(vector<double> xs, vector<double> ys ){
 
-	vector < vector <double> >  mat;
+    vector < vector <double> >  mat;
 
-	mat.push_back(vector <double> (2) );
+    mat.push_back(vector <double> (2) );
 
-	mat.push_back(vector <double> (2) ) ;
-    //coefficient de la matrice BT
-	mat[0][0] = xs[1] - xs[0];
+    mat.push_back(vector <double> (2) ) ;
 
-	mat[0][1] = xs[2] - xs[0];
+    mat[0][0] = xs[1] - xs[0];
 
-	mat[1][0] = ys[1] - ys[0];
+    mat[0][1] = xs[2] - xs[0];
 
-	mat[1][1] = ys[2] - ys[0];
+    mat[1][0] = ys[1] - ys[0];
+
+    mat[1][1] = ys[2] - ys[0];
 
 
-	return mat;
+    return mat;
 
 }
 
 //question 37 :
 
- // cette fonction permet de calculer la matrice inverse de B_T
-
- vector <vector <double> > BT_inv ( vector <vector <double> >   M,double determinant){
-
-     vector < vector <double> >  matri;
-
-     matri.push_back(vector <double> (2) );
-     matri.push_back(vector <double> (2) ) ;
-     matri[0][0] = (1/determinant)*M[1][1];
-
-     matri[0][1] = -(1/determinant)*M[0][1];
-
-     matri[1][0] = -(1/determinant)*M[1][0];
-
-     matri[1][1] = (1/determinant)*M[0][0] ;
-
-     return   matri;
+// cette fonction permet de calculer la matrice inverse
 
 
- }
+vector <vector <double> > BT_inv ( vector <vector <double> >   M,double determinant){
 
- //Transpose de la matrice inverse de BT
+    vector < vector <double> >  matri;
+
+    matri.push_back(vector <double> (2) );
+    matri.push_back(vector <double> (2) ) ;
+    matri[0][0] = (1/determinant)*M[1][1];
+
+    matri[0][1] = -(1/determinant)*M[0][1];
+
+    matri[1][0] = -(1/determinant)*M[1][0];
+
+    matri[1][1] = (1/determinant)*M[0][0] ;
+
+    return   matri;
+
+
+}
+
+//Transpose de la matrice inverse de BT
 vector <vector <double> > BT_inv_t ( vector <vector <double> >   M){
 
     vector < vector <double> >  matri;
@@ -386,13 +303,14 @@ vector<double> produit_matrice_vecteur(vector<vector<double>>m,  vector<double> 
     return resultat;
 }
 
+
 vector<vector <double> > DiffTerm ( vector<double> xs , vector<double> ys ) {
 
-   vector <vector<double>> matrice;
+    vector <vector<double>> matrice;
 
     vector<double> ligne(3);
 
-   double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
+    double det = (xs[1]-xs[0])*(ys[2]-ys[0]) - (xs[2]-xs[0])*(ys[1]-ys[0]);
 
     vector<vector<double>> B = CalcMatBTt(xs,ys);
 
@@ -418,13 +336,13 @@ vector<vector <double> > DiffTerm ( vector<double> xs , vector<double> ys ) {
             vector<double> B4 =   produit_matrice_vecteur(B1,gradient[j], B3);
             vector<double> B5 =   produit_matrice_vecteur(B2,B4, B33);
 
-         ligne[j]= inner_product( gradient[k].begin(),gradient[k].end(),B5.begin(), 0   );
+            ligne[j]= inner_product( gradient[k].begin(),gradient[k].end(),B5.begin(), 0   );
 
         }
         matrice.push_back(ligne);
     }
 
-      return matrice;
+    return matrice;
 
 }
 vector<vector <double> > ConvectTerm ( vector<double> xs , vector<double> ys ){
@@ -447,8 +365,9 @@ vector<vector <double> > ConvectTerm ( vector<double> xs , vector<double> ys ){
         }
         matrice.push_back(ligne);
     }
-    return matrice;}
+    return matrice;
 
+}
 
 vector<vector <double> > ReacTerm ( vector<double> xs , vector<double> ys ){
     double det = abs((xs[1] - xs[0])*(ys[2] - ys[0]) -(xs[2] - xs[0])*(ys[1] - ys[0]));
@@ -501,141 +420,92 @@ vector <int> extendVec (vector<int> V ){
 
 
 // Partie (44)
-
-// question (d)
-
-vector <double> extendVect(vector <double> V, int N=6, int M=6){
-
-    int I = V.size();
-    int G = (N+1)*(M+1);
-    vector <double> W(G);
-    int k=0;
-
-    for (int s = 0; s < G; s++)
-    {
-        int k=num_gb_int(M,N,s);
-        if(k!=-1){
-            W[s]=V[k];
-        }else
-        {
-            W[s]=0;
-        }
-        k++;
-    }
-
-    return W;
-}
-
-// question (e)
-vector<double> intVect(vector <double> W, int N=6, int M=6){
-
-    int I = (N-1)*(M-1);
-    int G = W.size();
-    vector <double> V(I);
-    int k=0;
-
-    for (int s = 0; s < G; s++)
-    {
-        int k=num_gb_int(M,N,s);
-        if(-1!=k){
-            V[k]=W[s];
-        }
-        k++;
-    }
-    return V;
+vector <double> vecteur_global(vector <double> v){
+    return v;
 }
 
 //question 10
 
 
-int TRG(int t, int i, int N, int M){
+vector <vector<double>> extendVect(vector< vector<double>> v, int N, int M){
+    int I = v.size();
 
-    int n_trg=0;
-    vector<vector<int>> liste_trg;
-    vector<int> t_trg;
-    int glb=0;
+    int G = (N+1)*(M+1);
 
-    if(i <= 2)
+    vector<vector <double>> vv(G);
+    int k=0;
+
+    for (int i = 0; i < G; ++i) {
+
+        vv.push_back(vector<double>(2));
+
+
+    }
+
+    for (int s = 0; s < G; s++)
     {
-        liste_trg = maillageTR(N, M);
-        t_trg = liste_trg[t];
-        glb=t_trg [i];
-    }
-    return glb;
-}
+        int neud_s=num_gb_int(M,N,s);
 
-vector <double>  matVec(vector <double> v, int K, double a=1, int N=6, int M= 6){
-
-    vector <double>  WW((N+1)*(M+1)) ;
-
-
-    vector <vector <int> > B;
-
-    vector<double> W;
-
-    int s=0;
-
-    double b=a;
-
-
-    for (int t= 0 ; t <= K-1 ; t++){
-
-        vector <double> xs, ys;
-
-        vector <int>  t_trg;
-
-        vector <double> lesXs= Subdiv (a, N);
-
-        vector <double> lesYs= Subdiv (b, M);
-
-        t_trg=(maillageTR(N,M))[t];
-        vector <int> V1= invnumgb(M,N,t_trg[0]);
-        vector <int> V2= invnumgb(M,N,t_trg[1]);
-        vector <int> V3= invnumgb(M,N,t_trg[2]);
-
-        // la matrice jacobienne
-        for (int i = 0; i <=2; i++)
+        if(k < I)
         {
-            xs.push_back(lesXs[V1[0]]);
-            xs.push_back(lesXs[V2[0]]);
-            xs.push_back(lesXs[V3[0]]);
-        }
+            if(neud_s !=111111){
 
-        for (int i = 0; i <=2; i++)
-        {
-            ys.push_back(lesYs[V1[1]]);
-            ys.push_back(lesYs[V2[1]]);
-            ys.push_back(lesYs[V3[1]]);
-        }
-
-        vector <vector <double>> matrix_g= CalcMatBTt(xs,ys);
-        for (int i = 0; i <= 2; i++)
-        {
-            s=TRG(t,i,N,M);
-
-            double res ;
-
-            for (int j = 0; j <= 2 ; i++)
+                vv[s][0]= v[k][0];
+                vv[s][1]= v[k][1];
+            }else
             {
-                int r = TRG(t,j, N, M);
-
-
-                double PROD2 = eps* DiffTerm(xs,ys)[i][j]+gam* ConvectTerm(xs,ys)[i][j]+lam*ReacTerm(xs,ys)[i][j];
-
-
-
-                res= res + extendVect(v,N,M)[r]*PROD2;
-
+                vv[s][0]= 0;
+                vv[s][1]= 0;
             }
-
-            WW[s]= WW[s] + res;
         }
+        k++;
+    }
+    return vv;
+}
+
+
+vector< vector<double>> intVect(vector <vector<double>> w, double N,double M){
+    int G = w.size();
+    int I = (N-1)*(M-1);
+
+    vector <vector<double>> v(I);
+    for (int i = 0; i < G; ++i) {
+
+        v.push_back(vector<double>(2));
+
     }
 
-    W=intVect(WW);
 
-    return W;
+
+    for (int i = 0; i < G; i++)
+
+    {
+
+        int s = numgb(M,N,w[i][0], w[i][1]);
+        int k = num_gb_int(N,M,s);
+        if(k =i){
+
+            v[i][0] = invnumint(N,M,k)[0];
+            v[i][1] = invnumint(N,M,k)[1];
+        }}
+    return v;
 }
+
+vector <vector<double>>  matVec(vector <vector<double>> v, int N, int M){
+    int k = (N+1)*(M+1);
+
+    vector <double>  WW(k) ;
+    vector <vector<double>>   VV = extendVect(v, N,M);
+
+    for (int t = 0; t < k-1 ; ++t) {
+
+        vector<int> sommets = maillageTR(N,M)[t];
+
+    }
+
+
+}
+
 
 
 int main() {
@@ -660,12 +530,11 @@ int main() {
     cout << "(" << invnumin[0] << "," << invnumin[1] << ")" << "\n" << endl;
     cout << "******************num_int_gb********************\n" << endl;
     cout << "La valeur globale  est \n" << endl;
-    cout << num_int_gb(10, 14, 12) << endl;
+    cout << num_int_gb(10, 14, 19) << endl;
     cout << "\n" << endl;
     cout << "******************num_gb_int********************\n" << endl;
     cout << "Le numero interieur globale est :  k\n" << endl;
-
-    cout << num_gb_int(10, 14, 26) << endl;
+    cout << num_gb_int(10, 14, 35) << endl;
 
     cout << "***************************************************************************\n" << endl;
 
@@ -811,7 +680,7 @@ int main() {
         cout << xi[i]<< endl;
     }
 
-   cout << "Les valeurs de yi\n" << endl;
+    cout << "Les valeurs de yi\n" << endl;
 
     for (int i= 0; i < 15; ++i) {
         cout << yi[i]<< endl;
